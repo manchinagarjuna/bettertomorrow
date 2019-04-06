@@ -2,3 +2,15 @@ A social networking platform for the verified Non profit Government organization
 
 ## Pre-Requisites
 * Go 1.12
+
+## Run using:
+
+    go build
+
+    ./bettertomorrow
+
+Navigate to http://localhost:8080/static/
+
+## Source layout
+
+HTML, CSS, and JS files are in the `assets` folder, in the `static` subfolder.
