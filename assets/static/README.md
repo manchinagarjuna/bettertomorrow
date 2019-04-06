@@ -1,0 +1,1 @@
+Serves static web files

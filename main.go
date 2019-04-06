@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+)
 
 func main() {
-	fmt.Println("It's the hackathon project")
+
+	//Serving static assets
+	fs := http.FileServer(http.Dir("assets/static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	http.ListenAndServe(":8080", nil)
 }
