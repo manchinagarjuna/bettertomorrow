@@ -5,9 +5,7 @@ A social networking platform for the verified Non profit Government organization
 
 ## Run using:
 
-    go build
-
-    ./bettertomorrow
+    go run main.go
 
 Navigate to http://localhost:8080/static/
 
