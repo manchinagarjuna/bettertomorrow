@@ -20,7 +20,7 @@ func OrgHandler(w http.ResponseWriter, msg util.RequestMessage, collections util
 	switch msg.Operation {
 	case "get":
 		data, err = GetOrgs(collections.Organization)
-	case "insert":
+	case "new":
 		var org Organization
 		err = json.Unmarshal(msg.Data, &org)
 		if err != nil {

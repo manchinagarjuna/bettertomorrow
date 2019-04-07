@@ -20,7 +20,7 @@ func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collections uti
 	switch msg.Operation {
 	case "get":
 		data, err = GetPosts(collections.Post, "")
-	case "insert":
+	case "new":
 		var post Post
 		err = json.Unmarshal(msg.Data, &post)
 		if err != nil {
