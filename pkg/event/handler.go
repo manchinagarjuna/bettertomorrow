@@ -19,7 +19,7 @@ func EventHandler(w http.ResponseWriter, msg util.RequestMessage, collections ut
 
 	switch msg.Operation {
 	case "get":
-		data, err = GetEvents(collections.Event, "")
+		data, err = GetEvents(collections.Event, "{}")
 	case "new":
 		var event Event
 		err = json.Unmarshal(msg.Data, &event)
@@ -54,11 +54,6 @@ func EventHandler(w http.ResponseWriter, msg util.RequestMessage, collections ut
 
 func GetEvents(collection *mongo.Collection, filter string) ([]Event, error) {
 	var events []Event
-	var bdoc interface{}
-	err := bson.UnmarshalExtJSON([]byte(filter), false, &bdoc)
-	if err != nil {
-		panic(err)
-	}
 
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
