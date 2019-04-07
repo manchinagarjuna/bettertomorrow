@@ -9,33 +9,31 @@ let convertDateToString = (date) => {
 class EventPost extends React.Component {
     render() {
         return (
-            <div className="row border rounded event_post">
-              <div className="col">
-                <strong className="text-primary">
-                  {this.props.currentEvent.Location}
-                </strong>
-                <h3>{this.props.currentEvent.Description}</h3>
-                <div className="text-muted">
-                  Starts at {
-                      convertDateToString(this.props.currentEvent.Starttime)[1]
-                  } on {
-                      convertDateToString(this.props.currentEvent.Starttime)[0]
-                  }
-                </div>
-                <br/>
-                <button type="button" className="btn btn-outline-primary btn-sm btn_pad"
-                        onClick={this.props.onScheduleClick}>Add to Schedule</button>
-                <button type="button" className="btn btn-outline-success btn-sm btn_pad"
-                        onClick={this.props.onLikeClick}>
-                  <span className="number_box">
-                    {this.props.currentEvent.Numlikes}
-                  </span>
-                  <i className="fas fa-heart"></i>
-                </button>
-                <a className="float-right" href="#"><span className="text-muted"><small>Report</small></span></a>
-                
-              </div>
+        <div class="card">
+            <div class="user-info">
+                <img class="user-thumb" src="images/headshot.JPG"/>
+                <p class="user-id">Marly H.</p>
             </div>
+            <div class="post-data">
+                <p class="date">April 6, 2019</p>
+                <p class="location">Cambridge, MA</p>
+            </div>
+            <div class="post-content">
+                <h2 class="post-title">Title Goes Here</h2>
+                <p class="post-text">Content goes here... Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur accusantium aperiam impedit, officia reprehenderit labore eveniet suscipit et obcaecati quisquam sequi similique in hic? Ut vero omnis accusantium quas temporibus?</p>
+                <img class="post-img" src="images/event-image.jpg"/>
+            </div>
+            <div class="social-icon">
+                <div class="likes">
+                    <i class="fab fa-gratipay"></i>
+                    <p class="counter">32</p>
+                </div>
+                <div class="comments">
+                    <i class="fas fa-comments"></i>
+                    <p class="counter">15</p>
+                </div>
+            </div>
+        </div>
         );
     }
 }
