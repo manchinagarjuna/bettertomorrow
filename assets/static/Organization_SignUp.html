@@ -51,6 +51,27 @@
     button:hover {
       background-color: #3d3d29;
     }
+    .submitbutton{
+    padding: 10px 50px 11px !important;
+    font-size: 21px !important;
+    background-color: #F36C8C;
+    font-weight: bold;
+    text-shadow: 1px 1px #F36C8C;
+    color: #ffffff;
+    border-radius: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border: 1px solid #F36C8C;
+    cursor: pointer;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    transition: background-color .5s ease-out;
+    margin-top: 50px;
+    }
+    button:hover {
+      background-color: #3d3d29;
+    }
   </style>
   <body>
     <div id="headerTarget"></div>
@@ -69,14 +90,39 @@
         </div>
         <div class="col align-self-center">
           <div class="text-center">
-            <h3>Some general information</h3><br>
-            <p><input type="text" name="ngoname" placeholder="NGO Name"/></p>
-            <p><input type="text" name="gov_id" placeholder="Government ID"/></p>
-            <p><input type="password" name="password" placeholder="Password"/></p>
-            <p><input type="password" name="password2" placeholder="Retype password"/></p>
-            <p><button class="mybutton">Sign Up</button></p>
-        </div>
+<form>
+  <div class="form-row">
+      <label for="validationServer01">Non Governative Organization Name</label>
+      <input type="text" class="form-control" id="validationServer01" placeholder="First name" value="NGO Name" required>
+  <div class="form-row">    
+      <label for="validationServer02">Government ID</label>
+      <input type="text" class="form-control" id="validationServer02" placeholder="Last name" value="ID" required>
+  </div>
+  <div class="form-row">
+      <label for="validationServer03">City</label>
+      <input type="text" class="form-control" id="validationServer03" placeholder="City" required>
+  </div>
+  <div class="form-row">
+      <label for="validationServer04">State</label>
+      <input type="text" class="form-control" id="validationServer04" placeholder="State" required>
+  </div>
+  <div class="form-row">
+      <label for="validationServer05">Zip</label>
+      <input type="text" class="form-control" id="validationServer05" placeholder="Zip" required>
+  </div>
+  <div class="form-row">  
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="invalidCheck3" required>
+      <label class="form-check-label" for="invalidCheck3">
+        Agree to terms and conditions
+      </label>
+      <div class="invalid-feedback">
+        You must agree before submitting.
       </div>
-    </div>    
+</div>
+  <div class="row">
+    <button class="submitbutton" type="submit" >Submit form</button>
+  </div>
+</form> 
   </body>
 </html>

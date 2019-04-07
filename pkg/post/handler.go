@@ -12,28 +12,35 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collection *mongo.Collection, httpMethod string) {
+func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collections util.Collections, httpMethod string) {
 	var data interface{}
 	var err error
 	errorString := ""
 
 	switch msg.Operation {
 	case "get":
-		data, err = GetPosts(collection)
+		data, err = GetPosts(collections.Post, "")
 	case "insert":
 		var post Post
 		err = json.Unmarshal(msg.Data, &post)
 		if err != nil {
 			break
 		}
-		err = InsertPost(collection, post)
+		err = InsertPost(collections.Post, post)
 	case "delete":
 		var post Post
 		err = json.Unmarshal(msg.Data, &post)
 		if err != nil {
 			break
 		}
-		err = DeletePost(collection, post)
+		err = DeletePost(collections.Post, post)
+	case "filterByOrg":
+		var getPostsReq GetPostsByOrganizationRequest
+		err = json.Unmarshal(msg.Data, &getPostsReq)
+		if err != nil {
+			break
+		}
+		data, err = GetPosts(collections.Post, "{\"orgId\""+getPostsReq.ID+"}")
 	}
 
 	if err != nil {
@@ -45,8 +52,14 @@ func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collection *mon
 	w.Write([]byte(res))
 }
 
-func GetPosts(collection *mongo.Collection) ([]Post, error) {
+func GetPosts(collection *mongo.Collection, filter string) ([]Post, error) {
 	var posts []Post
+	var bdoc interface{}
+	err := bson.UnmarshalExtJSON([]byte(filter), false, &bdoc)
+	if err != nil {
+		panic(err)
+	}
+
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
 		return posts, err

@@ -12,28 +12,28 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func UserHandler(w http.ResponseWriter, msg util.RequestMessage, collection *mongo.Collection, httpMethod string) {
+func UserHandler(w http.ResponseWriter, msg util.RequestMessage, collections util.Collections, httpMethod string) {
 	var data interface{}
 	var err error
 	errorString := ""
 
 	switch msg.Operation {
 	case "get":
-		data, err = GetUsers(collection)
+		data, err = GetUsers(collections.User)
 	case "insert":
 		var user User
 		err = json.Unmarshal(msg.Data, &user)
 		if err != nil {
 			break
 		}
-		err = InsertUser(collection, user)
+		err = InsertUser(collections.User, user)
 	case "delete":
 		var user User
 		err = json.Unmarshal(msg.Data, &user)
 		if err != nil {
 			break
 		}
-		err = DeleteUser(collection, user)
+		err = DeleteUser(collections.User, user)
 	}
 
 	if err != nil {

@@ -132,28 +132,28 @@ let feedComponent =
 let dummyEvents = [dummyEvent1, dummyEvent2, dummyEvent3];
 feedComponent.setState({events: dummyEvents});
 
-// usr.ID = "1234"
-// usr.Displayname = "user 1"
-// usr.Icon = "<filepath>"
-// usr.RadiusInMiles = 20
-// usr.Location = "<city name>"
-// 
-// org.ID = "31215"
-// org.Name = "org 1"
-// org.Icon = "<filepath>"
-// org.Location = "<city name>"
-// org.Contacts = []string{usr.ID}
-// org.Volunteers = []string{usr.ID}
-// 
-// evnt.ID = "123"
-// evnt.Description = "a generic event decription"
-// evnt.Starttime = "123456"
-// evnt.Endtime = "674768458975"
-// evnt.Location = "<place name>"
-// evnt.Org = org.ID
-// evnt.Posttime = "5673567223"
-// evnt.Numlikes = 10
-// 
-// org.Events = []string{evnt.ID}
-// usr.Orgs = []string{org.ID}
+let fetchPosts = (updateFcn) => {
+
+    let remotePage = "api/v1/posts";
+
+    let request = new XMLHttpRequest();
+    request.onload = () => {
+        console.log(request);
+        let text = request.responseText;
+        let data = JSON.parse(text);
+        let newState = feedComponent.state.events;
+        feedComponent.setState({events: newState});
+    };
+    let requestLocation = window.location.protocol + "//" + 
+                          window.location.host + "/" + remotePage;
+    request.open("POST", requestLocation);
+    request.setRequestHeader("Content-Type", "application/json");
+    let x = JSON.stringify({operation: "get", data: ""});
+    console.log(x);
+    request.send(x);
+};
+
+
+
+fetchPosts();
 
