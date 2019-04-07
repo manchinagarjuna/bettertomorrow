@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"fmt"
 )
 
 func main() {
@@ -10,5 +11,7 @@ func main() {
 	fs := http.FileServer(http.Dir("assets/static"))
 	http.Handle("/", fs)
 
-	http.ListenAndServe(":8080", nil)
+	var port = "8080"
+	fmt.Println("Serving on port " + port)
+	http.ListenAndServe(":" + port, nil)
 }
