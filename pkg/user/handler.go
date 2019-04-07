@@ -20,7 +20,7 @@ func UserHandler(w http.ResponseWriter, msg util.RequestMessage, collections uti
 	switch msg.Operation {
 	case "get":
 		data, err = GetUsers(collections.User)
-	case "insert":
+	case "new":
 		var user User
 		err = json.Unmarshal(msg.Data, &user)
 		if err != nil {

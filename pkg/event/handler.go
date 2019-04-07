@@ -20,7 +20,7 @@ func EventHandler(w http.ResponseWriter, msg util.RequestMessage, collections ut
 	switch msg.Operation {
 	case "get":
 		data, err = GetEvents(collections.Event, "")
-	case "insert":
+	case "new":
 		var event Event
 		err = json.Unmarshal(msg.Data, &event)
 		if err != nil {
