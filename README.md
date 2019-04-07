@@ -7,33 +7,9 @@ A social networking platform for the verified Non profit Government organization
 
     go run main.go
 
-Navigate to http://localhost:8080/static/
+Navigate to http://localhost:8080/
 
 ## Source layout
 
 HTML, CSS, and JS files are in the `assets` folder, in the `static` subfolder.
-
-## Dog
-
-                              _
-                           ,:'/   _..._
-                          // ( `""-.._.'
-                          \| /    6\___
-                          |     6      4
-                          |            /
-                          \_       .--'
-                          (_'---'`)
-                          / `'---`()
-                        ,'        |
-        ,            .'`          |
-        )\       _.-'             ;
-       / |    .'`   _            /
-     /` /   .'       '.        , |
-    /  /   /           \   ;   | |
-    |  \  |            |  .|   | |
-     \  `"|           /.-' |   | |
-      '-..-\       _.;.._  |   |.;-.
-            \    <`.._  )) |  .;-. ))
-            (__.  `  ))-'  \_    ))'
-                `'--"`       `"""`
 
