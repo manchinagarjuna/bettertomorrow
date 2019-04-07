@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Post</title>
+    <script src="js/html_inserter.js"></script>
+    <script src="js/index.js"></script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
         .page-title {
@@ -23,9 +26,67 @@
             border-radius: 5px;
         }
     </style>
+    <script>
+     
+        function sendForm() {
+            let title = document.getElementById("title").value;
+            let eventDate = document.getElementById("date").value;
+            let locn = document.getElementById("myInput").value;
+            let state = document.getElementById("inputState").value;
+            let finalLocation = locn + ", " + state;
+            let description = document.getElementById("description").value;
+            let file = document.getElementById("image").files[0];
+ 
+            // Serialize the values into a JSON object.
+            let obj = {
+                Title: title,
+                Starttime: eventDate,
+                Location: finalLocation,
+                Description: description,
+                Image: "",
+            };
+           
+            // image serialization code
+            let imageBase64 = "";
+            let reader = new FileReader();
+            reader.addEventListener("load", () => {
+                obj.Image = reader.result;
+                sendRequest(obj);        
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                sendRequest(obj);
+            }
+        }
+
+        function sendRequest(obj) {
+            // Serialize the values into a JSON object.
+            // Generate the request struct.
+            let req = {operation: "new", data: obj}
+
+            // Generate the JSON string.
+            let jsonStr = JSON.stringify(req);
+
+            // Send the request. 
+            let request = new XMLHttpRequest();
+            let remotePage = "api/v1/events"
+            let requestLocation = window.location.protocol + "//" + 
+                                  window.location.host + "/" + remotePage;
+            let redirect = window.location.protocol + "//" + 
+                                  window.location.host + "/";
+            request.addEventListener("load", () => window.location.replace(redirect));
+            request.open("POST", requestLocation);
+            request.send(jsonStr);
+        }
+    </script>
 </head>
 <body>
     <main>
+        <div id="headerTarget"></div>
+        <br/>
+
        <h2 class="page-title">Create An Event</h1>
        <form class="form-box">
             <div class="event-title">
@@ -60,7 +121,7 @@
                 <label for="image">Upload an image</label>
                 <input type="file" class="form-control-file" id="image">
             </div><br><br>
-            <button class="btn btn-primary" type="submit">Post Your Event</button>
+            <button class="btn btn-primary" type="submit" onclick="sendForm()">Post Your Event</button>
           </form>
     </main>
     <script>
