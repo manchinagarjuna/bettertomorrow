@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"strings"
 	"time"
 
+	"github.com/manchinagarjuna/bettertomorrow/pkg/post"
 	"github.com/manchinagarjuna/bettertomorrow/pkg/user"
 	"github.com/manchinagarjuna/bettertomorrow/pkg/util"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,7 +29,17 @@ var userCollection *mongo.Collection
 var orgCollection *mongo.Collection
 var eventCollection *mongo.Collection
 
+var debugEnabled bool
+
 func apiHandler(w http.ResponseWriter, r *http.Request) {
+
+	if debugEnabled {
+		requestDump, err := httputil.DumpRequest(r, true)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(string(requestDump))
+	}
 
 	decoder := json.NewDecoder(r.Body)
 	var requestMessage util.RequestMessage
@@ -40,7 +53,9 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch strings.TrimRight(strings.TrimPrefix(r.URL.Path, "/api/v1/"), "/") {
 	case "users":
-		go user.UserHandler(w, requestMessage, userCollection, r.Method)
+		user.UserHandler(w, requestMessage, userCollection, r.Method)
+	case "posts":
+		post.PostHandler(w, requestMessage, userCollection, r.Method)
 	}
 }
 
@@ -60,6 +75,7 @@ func connectToMongoDB() (*mongo.Database, error) {
 func main() {
 
 	port := "8080"
+	debugEnabled = false
 
 	database, err := connectToMongoDB()
 	if err != nil {
@@ -70,18 +86,15 @@ func main() {
 	orgCollection = database.Collection("organization")
 	eventCollection = database.Collection("event")
 
-	// Creating a ServeMux to log messages as well as serve static pages.
 	server := http.NewServeMux()
 
 	//Serving static assets
 	fs := http.FileServer(http.Dir("assets/static"))
-	// Connect a basic logger.
-	handlerWithLogger := logger(fs)
+	server.HandleFunc("/api/v1/", apiHandler)
 	server.Handle("/", fs)
-	http.HandleFunc("/api/v1/", apiHandler)
 
 	log.Println("Serving on port " + port)
-	err = http.ListenAndServe(":"+port, handlerWithLogger)
+	err = http.ListenAndServe(":"+port, logger(server))
 
 	if err != nil {
 		log.Fatal(err.Error())

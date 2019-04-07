@@ -17,7 +17,7 @@ func UserHandler(w http.ResponseWriter, msg util.RequestMessage, collection *mon
 	var err error
 	errorString := ""
 
-	switch msg.API {
+	switch msg.Operation {
 	case "get":
 		data, err = GetUsers(collection)
 	case "insert":
