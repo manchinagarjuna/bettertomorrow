@@ -54,11 +54,6 @@ func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collections uti
 
 func GetPosts(collection *mongo.Collection, filter string) ([]Post, error) {
 	var posts []Post
-	var bdoc interface{}
-	err := bson.UnmarshalExtJSON([]byte(filter), false, &bdoc)
-	if err != nil {
-		panic(err)
-	}
 
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
