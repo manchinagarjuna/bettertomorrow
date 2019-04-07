@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostCard</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 150%;
+        }
+        .card {
+            padding: 30px;
+            width: 60%;
+            margin: 20px auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 #d3d3d3, 0 6px 20px 0 #d3d3d3;
+            position: relative;
+            background-color: white;
+        }
+        .card:hover {
+            box-shadow: 0 4px 8px 0 #808080, 0 6px 20px 0 #808080;
+            cursor: pointer;
+        }
+        .user-info {
+            text-align: center;
+            width: 100px;
+        }
+        .user-thumb {
+            width: 80px;
+            border-radius: 50%;
+        }
+        .post-data {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: block;
+            text-align: right;
+        }
+        .post-content {
+            margin: 20px 0;
+            border-top: 1px solid #d3d3d3;
+            padding-top: 20px;
+        }
+        .post-img {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .likes, .comments {
+            border: 1px solid #d3d3d3;
+            border-radius: 6px;
+            padding: 8px 12px 5px;
+            display: inline-block;
+            position: relative;
+        }
+        .likes:hover, .comments:hover {
+            border: 1px solid #000000;
+            cursor: pointer;
+        }
+        .comments {
+            margin-left: 30px;
+        }
+        .fab, .fas {
+            /* border: 1px solid blue; */
+            font-size: 25px;
+        }
+        .counter {
+            /* border: 1px solid green; */
+            display: inline;
+            font-size: 14px;
+            position: relative;
+            top: -5px;
+            left: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+            <div class="user-info">
+                <img class="user-thumb" src="images/headshot.JPG">
+                <p class="user-id">Marly H.</p>
+            </div>
+            <div class="post-data">
+                <p class="date">April 6, 2019</p>
+                <p class="location">Cambridge, MA</p>
+            </div>
+            <div class="post-content">
+                <h2 class="post-title">Title Goes Here</h2>
+                <p class="post-text">Content goes here... Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur accusantium aperiam impedit, officia reprehenderit labore eveniet suscipit et obcaecati quisquam sequi similique in hic? Ut vero omnis accusantium quas temporibus?</p>
+                <img class="post-img" src="images/event-image.jpg">
+            </div>
+            <div class="social-icon">
+                <div class="likes">
+                    <i class="fab fa-gratipay"></i>
+                    <p class="counter">32</p>
+                </div>
+                <div class="comments">
+                    <i class="fas fa-comments"></i>
+                    <p class="counter">15</p>
+                </div>
+            </div>
+    </div>
+</body>
+</html>
