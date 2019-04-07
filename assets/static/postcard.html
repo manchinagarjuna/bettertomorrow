@@ -35,6 +35,12 @@
             width: 80px;
             border-radius: 50%;
         }
+        .post-title {
+            font-size: 20px;
+        }
+        .post-text {
+            font-size: 15px;
+        }
         .post-data {
             position: absolute;
             top: 30px;
@@ -48,7 +54,7 @@
             padding-top: 20px;
         }
         .post-img {
-            width: 100%;
+            width: 50%;
             margin-top: 20px;
             border-radius: 5px;
         }
@@ -78,6 +84,44 @@
             top: -5px;
             left: 3px;
         }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            /* border-bottom: 1px dotted black; */
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 80%;
+            background-color: #555;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 20px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 55%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -15px;
+            border-width: 15px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -92,7 +136,10 @@
             </div>
             <div class="post-content">
                 <h2 class="post-title">Title Goes Here</h2>
-                <p class="post-text">Content goes here... Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur accusantium aperiam impedit, officia reprehenderit labore eveniet suscipit et obcaecati quisquam sequi similique in hic? Ut vero omnis accusantium quas temporibus?</p>
+                <div class="tooltip">
+                    <p class="post-text">A preview for event description goes here with 300-characters limit...</p>
+                    <span class="tooltiptext">Event Title<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem minus id libero alias repellendus nesciunt tempora eum a corporis tempore, delectus ipsum ut, nemo optio praesentium laboriosam quaerat sunt explicabo?</span>
+                </div>
                 <img class="post-img" src="images/event-image.jpg">
             </div>
             <div class="social-icon">
