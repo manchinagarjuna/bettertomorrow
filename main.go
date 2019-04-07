@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/manchinagarjuna/bettertomorrow/pkg/event"
+	"github.com/manchinagarjuna/bettertomorrow/pkg/organization"
 	"github.com/manchinagarjuna/bettertomorrow/pkg/post"
 	"github.com/manchinagarjuna/bettertomorrow/pkg/user"
 	"github.com/manchinagarjuna/bettertomorrow/pkg/util"
@@ -25,9 +27,7 @@ func logger(h http.Handler) http.Handler {
 	})
 }
 
-var userCollection *mongo.Collection
-var orgCollection *mongo.Collection
-var eventCollection *mongo.Collection
+var dbCollections util.Collections
 
 var debugEnabled bool
 
@@ -53,9 +53,13 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch strings.TrimRight(strings.TrimPrefix(r.URL.Path, "/api/v1/"), "/") {
 	case "users":
-		user.UserHandler(w, requestMessage, userCollection, r.Method)
+		user.UserHandler(w, requestMessage, dbCollections, r.Method)
 	case "posts":
-		post.PostHandler(w, requestMessage, userCollection, r.Method)
+		post.PostHandler(w, requestMessage, dbCollections, r.Method)
+	case "organizations":
+		organization.OrgHandler(w, requestMessage, dbCollections, r.Method)
+	case "events":
+		event.EventHandler(w, requestMessage, dbCollections, r.Method)
 	}
 }
 
@@ -82,9 +86,10 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	userCollection = database.Collection("user")
-	orgCollection = database.Collection("organization")
-	eventCollection = database.Collection("event")
+	dbCollections.User = database.Collection("user")
+	dbCollections.Organization = database.Collection("organization")
+	dbCollections.Event = database.Collection("event")
+	dbCollections.Post = database.Collection("post")
 
 	server := http.NewServeMux()
 

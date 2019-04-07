@@ -1,4 +1,4 @@
-package post
+package event
 
 import (
 	"context"
@@ -12,35 +12,35 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collections util.Collections, httpMethod string) {
+func EventHandler(w http.ResponseWriter, msg util.RequestMessage, collections util.Collections, httpMethod string) {
 	var data interface{}
 	var err error
 	errorString := ""
 
 	switch msg.Operation {
 	case "get":
-		data, err = GetPosts(collections.Post, "")
+		data, err = GetEvents(collections.Event, "")
 	case "insert":
-		var post Post
-		err = json.Unmarshal(msg.Data, &post)
+		var event Event
+		err = json.Unmarshal(msg.Data, &event)
 		if err != nil {
 			break
 		}
-		err = InsertPost(collections.Post, post)
+		err = InsertEvent(collections.Event, event)
 	case "delete":
-		var post Post
-		err = json.Unmarshal(msg.Data, &post)
+		var event Event
+		err = json.Unmarshal(msg.Data, &event)
 		if err != nil {
 			break
 		}
-		err = DeletePost(collections.Post, post)
+		err = DeleteEvent(collections.Event, event)
 	case "filterByOrg":
-		var getPostsReq GetPostsByOrganizationRequest
-		err = json.Unmarshal(msg.Data, &getPostsReq)
+		var getEventsReq GetEventsByOrganizationRequest
+		err = json.Unmarshal(msg.Data, &getEventsReq)
 		if err != nil {
 			break
 		}
-		data, err = GetPosts(collections.Post, "{\"orgId\""+getPostsReq.ID+"}")
+		data, err = GetEvents(collections.Post, "{\"orgId\""+getEventsReq.ID+"}")
 	}
 
 	if err != nil {
@@ -52,8 +52,8 @@ func PostHandler(w http.ResponseWriter, msg util.RequestMessage, collections uti
 	w.Write([]byte(res))
 }
 
-func GetPosts(collection *mongo.Collection, filter string) ([]Post, error) {
-	var posts []Post
+func GetEvents(collection *mongo.Collection, filter string) ([]Event, error) {
+	var events []Event
 	var bdoc interface{}
 	err := bson.UnmarshalExtJSON([]byte(filter), false, &bdoc)
 	if err != nil {
@@ -62,44 +62,44 @@ func GetPosts(collection *mongo.Collection, filter string) ([]Post, error) {
 
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
-		return posts, err
+		return events, err
 	}
 
 	defer cur.Close(context.Background())
 	for cur.Next(context.Background()) {
-		var post *Post = &Post{}
-		err := cur.Decode(post)
+		var event *Event = &Event{}
+		err := cur.Decode(event)
 		if err != nil {
-			return posts, err
+			return events, err
 		}
-		posts = append(posts, *post)
+		events = append(events, *event)
 	}
 	err = cur.Err()
-	return posts, err
+	return events, err
 }
 
-func InsertPost(collection *mongo.Collection, post Post) error {
+func InsertEvent(collection *mongo.Collection, event Event) error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	postBson, err := bson.Marshal(post)
+	eventBson, err := bson.Marshal(event)
 	if err != nil {
 		return err
 	}
 
-	res, err := collection.InsertOne(ctx, postBson)
+	res, err := collection.InsertOne(ctx, eventBson)
 	id := res.InsertedID
 	fmt.Println(id)
 
 	return err
 }
 
-func DeletePost(collection *mongo.Collection, post Post) error {
+func DeleteEvent(collection *mongo.Collection, event Event) error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	postBson, err := bson.Marshal(post)
+	eventBson, err := bson.Marshal(event)
 	if err != nil {
 		return err
 	}
 
-	_, err = collection.DeleteOne(ctx, postBson)
+	_, err = collection.DeleteOne(ctx, eventBson)
 
 	return err
 }

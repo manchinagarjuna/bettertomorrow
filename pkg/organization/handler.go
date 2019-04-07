@@ -1,4 +1,4 @@
-package user
+package organization
 
 import (
 	"context"
@@ -12,28 +12,28 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func UserHandler(w http.ResponseWriter, msg util.RequestMessage, collections util.Collections, httpMethod string) {
+func OrgHandler(w http.ResponseWriter, msg util.RequestMessage, collections util.Collections, httpMethod string) {
 	var data interface{}
 	var err error
 	errorString := ""
 
 	switch msg.Operation {
 	case "get":
-		data, err = GetUsers(collections.User)
+		data, err = GetOrgs(collections.Organization)
 	case "insert":
-		var user User
-		err = json.Unmarshal(msg.Data, &user)
+		var org Organization
+		err = json.Unmarshal(msg.Data, &org)
 		if err != nil {
 			break
 		}
-		err = InsertUser(collections.User, user)
+		err = InsertOrg(collections.Organization, org)
 	case "delete":
-		var user User
-		err = json.Unmarshal(msg.Data, &user)
+		var org Organization
+		err = json.Unmarshal(msg.Data, &org)
 		if err != nil {
 			break
 		}
-		err = DeleteUser(collections.User, user)
+		err = DeleteOrg(collections.Organization, org)
 	}
 
 	if err != nil {
@@ -45,48 +45,48 @@ func UserHandler(w http.ResponseWriter, msg util.RequestMessage, collections uti
 	w.Write([]byte(res))
 }
 
-func GetUsers(collection *mongo.Collection) ([]User, error) {
-	var users []User
+func GetOrgs(collection *mongo.Collection) ([]Organization, error) {
+	var orgs []Organization
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
-		return users, err
+		return orgs, err
 	}
 
 	defer cur.Close(context.Background())
 	for cur.Next(context.Background()) {
-		var user *User = &User{}
-		err := cur.Decode(user)
+		var org *Organization = &Organization{}
+		err := cur.Decode(org)
 		if err != nil {
-			return users, err
+			return orgs, err
 		}
-		users = append(users, *user)
+		orgs = append(orgs, *org)
 	}
 	err = cur.Err()
-	return users, err
+	return orgs, err
 }
 
-func InsertUser(collection *mongo.Collection, user User) error {
+func InsertOrg(collection *mongo.Collection, org Organization) error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	userBson, err := bson.Marshal(user)
+	orgBson, err := bson.Marshal(org)
 	if err != nil {
 		return err
 	}
 
-	res, err := collection.InsertOne(ctx, userBson)
+	res, err := collection.InsertOne(ctx, orgBson)
 	id := res.InsertedID
 	fmt.Println(id)
 
 	return err
 }
 
-func DeleteUser(collection *mongo.Collection, user User) error {
+func DeleteOrg(collection *mongo.Collection, org Organization) error {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	userBson, err := bson.Marshal(user)
+	orgBson, err := bson.Marshal(org)
 	if err != nil {
 		return err
 	}
 
-	_, err = collection.DeleteOne(ctx, userBson)
+	_, err = collection.DeleteOne(ctx, orgBson)
 
 	return err
 }
